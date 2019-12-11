@@ -51,9 +51,8 @@ class NodeItem extends Component {
 
     return (
       <div
-        className={"element" + " " + node.type}
-        id={node.id}
-        key={node.id}
+        className={"element " + node.type}
+        key={node.type} id={node.id}
         style={{
           position: "absolute",
           left: node.left,

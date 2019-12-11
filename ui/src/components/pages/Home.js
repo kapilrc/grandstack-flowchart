@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { jsPlumb } from "jsplumb";
-import "../../css/Home.css";
 import Sidebar from "../layout/Sidebar";
 import DataSet from "../layout/DataSet";
 
@@ -24,8 +23,8 @@ class Home extends Component {
           target: e.target,
           paintStyle: { strokeWidth: 2, stroke: "rgb(243, 53, 0)" },
           overlays:e.data.label ? [ 
-            [ "Arrow", { width:10, length:10, location: 1, id:"arrow" } ],
-            [ "Label", {label:e.data.label, id:"label"+idx}] ] : [[ "Arrow", { width:10, length:10, location: 0.8, id:"arrow" } ] ]
+            [ "Arrow", { width:10, length:10, location: 1, id:"arrow"+idx } ],
+            [ "Label", {label:e.data.label, id:"label"+idx}] ] : [[ "Arrow", { width:10, length:10, location: 0.8, id:"arrow"+idx } ] ]
         });
         jsPlumb.makeTarget(document.getElementsByClassName("element"), {
           anchor: "Continuous"
