@@ -1,7 +1,50 @@
 import React, { Component } from "react";
+import { jsPlumb } from "jsplumb";
 
 class NodeItem extends Component {
 
+  componentDidMount() {
+    
+    const { node } = this.props;
+
+    jsPlumb.getInstance().draggable(node.id);
+  }
+
+  componentDidUpdate(){
+    
+    const { node, edges } = this.props;
+    
+    jsPlumb.bind("ready", function() {
+        let el = document.getElementById(node.id);
+        let outer = el.getElementsByClassName('outer')[0]; 
+        let inner = el.getElementsByClassName('inner')[0];
+
+        let instance = jsPlumb.getInstance();
+
+        // instance.connect({ source: "opened", target: "phone1", type:"basic" })
+
+        // console.log(outer, inner)
+        // instance.draggable(el, {
+        //   containment: 'parent'
+        // });
+        
+        // if(outer){
+        //   jsPlumb.makeSource(el, { //'outer_'+node.id 
+        //     parent: el,
+        //     anchor: 'Continuous'
+        //   });
+        // }
+        
+        // if(inner) {
+        //   // jsPlumb.getInstance().draggable(inner, {
+        //   //   containment: 'parent'
+        //   // });
+        //   jsPlumb.makeTarget(el, {
+        //     anchor: "Continuous"
+        //   });
+        // }
+    });
+  }
 
   render() {
     const { node } = this.props;
