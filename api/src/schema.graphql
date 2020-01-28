@@ -1,70 +1,40 @@
-type User {
-  id: ID!
-  name: String
-  friends: [User] @relation(name: "FRIENDS", direction: "BOTH")
-  reviews: [Review] @relation(name: "WROTE", direction: "OUT")
-  avgStars: Float
-    @cypher(
-      statement: "MATCH (this)-[:WROTE]->(r:Review) RETURN toFloat(avg(r.stars))"
-    )
-  numReviews: Int
-    @cypher(statement: "MATCH (this)-[:WROTE]->(r:Review) RETURN COUNT(r)")
-}
-
-type Start {
-  id: ID!
-  name: String
-  question: [Question] @relation(name: "", direction: "OUT)
-}
-
 type Question {
   id: ID!
-  name: String
+  content: String
+  context: String
+  hint: String
+  source_ref: Int
+  space: String
+  top: Int
+  left: Int
+  h: Int
+  w: Int
+  alternativeQuestions: [Question] @relation(name: "Answer", direction: "OUT")
+  solutions: [Solution] @relation(name: "Answer", direction: "OUT")
+  totalAnswers: Int
+    @cypher(statement: "MATCH (this)-[:Answer]->(r:Solution) RETURN COUNT(r)")
 }
 
-type Answer {
+type Solution {
   id: ID!
-  name: String
-  question: [Question] @relation(name: "", direction: "OUT)
-}
-
-type Action {
-  id: ID!
-  name: String
-}
-
-type Output {
-  id: ID!
-  name: String
-}
-
-type Business {
-  id: ID!
-  name: String
-  address: String
-  city: String
-  state: String
-  reviews: [Review] @relation(name: "REVIEWS", direction: "IN")
-  categories: [Category] @relation(name: "IN_CATEGORY", direction: "OUT")
-}
-
-type Review {
-  id: ID!
-  stars: Int
-  text: String
-  date: Date
-  business: Business @relation(name: "REVIEWS", direction: "OUT")
-  user: User @relation(name: "WROTE", direction: "IN")
-}
-
-type Category {
-  name: ID!
-  businesses: [Business] @relation(name: "IN_CATEGORY", direction: "IN")
+  content: String
+  context: String
+  hint: String
+  source_ref: Int
+  space: String
+  attachment_paths: String
+  attachment_titles: String
+  attachment_types: String
+  top: Int
+  left: Int
+  h: Int
+  w: Int
+  solutionToOtherQuestions: [Question] @relation(name: "Answer", direction: "IN")
 }
 
 type Query {
-  usersBySubstring(substring: String): [User]
+  questionsBySubstring(substring: String): [Question]
     @cypher(
-      statement: "MATCH (u:User) WHERE u.name CONTAINS $substring RETURN u"
+      statement: "MATCH (u:Question) WHERE u.content CONTAINS $substring RETURN u"
     )
 }

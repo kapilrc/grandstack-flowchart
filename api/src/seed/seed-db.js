@@ -15,15 +15,15 @@ const client = new ApolloClient({
 
 client
   .mutate({
-    // mutation: gql(seedmutations)
-    mutation: gql(`
-      mutation {
-        CreateUser(id: "start", name: "Starting Point") {
-          id
-          name
-        }
-      }
-    `)
+    mutation: gql(seedmutations)
+    // mutation: gql(`
+    //   mutation {
+    //     CreateUser(id: "start", name: "Starting Point") {
+    //       id
+    //       name
+    //     }
+    //   }
+    // `)
   })
   .then(data => console.log(data))
   .catch(error => console.error(error));
