@@ -140,6 +140,7 @@ li {
 
 .jtk-node svg text {
   cursor: pointer;
+  pointer-events: none;
 }
 
 

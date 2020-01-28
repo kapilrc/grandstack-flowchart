@@ -11,20 +11,20 @@ import NodeItem from "./NodeItem";
 class Home extends Component {
   state = {
     nodes: [],
-    edges: [],
-    jsInstance: null
+    edges: []
   };
 
   componentDidUpdate() {
-    const {nodes, edges } = this.state;
-    // console.log("edges", edges);
+    const { edges } = this.state;
+    console.log("edges", edges);
     jsPlumb.bind("ready", function() {
 
       edges.forEach((e, idx) => {
 
         // jsPlumb.addEndpoint(e.source, {uuid: e.source})
-        // jsPlumb.makeTarget( e.target );
-
+        jsPlumb.makeTarget( e.target );  
+        // var instance = jsPlumb.getInstance();
+  
         jsPlumb.connect({
           source: e.source,
           target: e.target,
@@ -32,13 +32,11 @@ class Home extends Component {
           overlays:e.data.label ? [ 
             [ "Arrow", { width:10, length:10, location: 1, id:"arrow"+idx } ],
             [ "Label", {label:e.data.label, id:"label"+idx}] ] : [[ "Arrow", { width:10, length:10, location: 0.8, id:"arrow"+idx } ] 
-          ]
+          ],
+          anchor:"AutoDefault"
         });
-        // jsPlumb.makeTarget(document.getElementsByClassName("element"), {
-        //   anchor: "Continuous"
-        // });
       });
-
+      
     });
   }
 
@@ -84,7 +82,7 @@ class Home extends Component {
           <Sidebar />
           <div className="jtk-canvas">
             <div id="zoomContainer" className="jtk-surface jtk-surface-panning">
-              {nodes.map(node => (
+            {nodes.map(node => (
                 <NodeItem key={node.id} node={node} />
               ))}
             </div>

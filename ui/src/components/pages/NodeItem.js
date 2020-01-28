@@ -5,46 +5,43 @@ class NodeItem extends Component {
 
   componentDidMount() {
     
-    const { node } = this.props;
-
-    jsPlumb.getInstance().draggable(node.id);
-  }
-
-  componentDidUpdate(){
-    
     const { node, edges } = this.props;
-    
+
     jsPlumb.bind("ready", function() {
-        let el = document.getElementById(node.id);
-        let outer = el.getElementsByClassName('outer')[0]; 
-        let inner = el.getElementsByClassName('inner')[0];
+      let el = document.getElementById(node.id);
+      let outer = el.getElementsByClassName('outer')[0]; 
+      let inner = el.getElementsByClassName('inner')[0];
 
-        let instance = jsPlumb.getInstance();
+      let instance = jsPlumb.getInstance();
 
-        // instance.connect({ source: "opened", target: "phone1", type:"basic" })
-
-        // console.log(outer, inner)
-        // instance.draggable(el, {
-        //   containment: 'parent'
-        // });
-        
-        // if(outer){
-        //   jsPlumb.makeSource(el, { //'outer_'+node.id 
-        //     parent: el,
-        //     anchor: 'Continuous'
-        //   });
-        // }
-        
-        // if(inner) {
-        //   // jsPlumb.getInstance().draggable(inner, {
-        //   //   containment: 'parent'
-        //   // });
-        //   jsPlumb.makeTarget(el, {
-        //     anchor: "Continuous"
-        //   });
-        // }
-    });
+      // console.log(outer, inner)
+      instance.draggable(el);
+      
+      // for connection
+      if(outer){
+        jsPlumb.makeSource(el, { //'outer_'+node.id 
+          filter: ".outer",
+          anchor: 'Continuous',
+          maxConnections: 3,
+          onMaxConnections: function (info, e) {
+            alert(`Maximum (${info.maxConnections}) connections allowed`);
+          }
+        });
+      }
+      
+      // for dragging node
+      if(inner) {
+        jsPlumb.makeTarget(el, {
+          anchor: "Continuous",
+          allowLoopback: true
+        });
+      }
+  });
   }
+
+  // componentDidUpdate(){
+  //   console.log(" component is updated !!!");
+  // }
 
   render() {
     const { node } = this.props;
