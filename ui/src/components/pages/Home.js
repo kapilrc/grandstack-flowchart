@@ -9,21 +9,26 @@ import NodeItem from "./NodeItem";
 // import Utils from "../../common/Utils"
 
 class Home extends Component {
-  state = {
-    nodes: [],
-    edges: []
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      nodes: [],
+      edges: []
+    };
+  }
 
   componentDidUpdate() {
     const { edges } = this.state;
     console.log("edges", edges);
+
     jsPlumb.bind("ready", function() {
+      console.log("get connections ", jsPlumb.getConnections())
 
       edges.forEach((e, idx) => {
 
         // jsPlumb.addEndpoint(e.source, {uuid: e.source})
-        jsPlumb.makeTarget( e.target );  
-        // var instance = jsPlumb.getInstance();
+        // jsPlumb.makeTarget( e.target );  
+        
   
         jsPlumb.connect({
           source: e.source,
@@ -33,7 +38,10 @@ class Home extends Component {
             [ "Arrow", { width:10, length:10, location: 1, id:"arrow"+idx } ],
             [ "Label", {label:e.data.label, id:"label"+idx}] ] : [[ "Arrow", { width:10, length:10, location: 0.8, id:"arrow"+idx } ] 
           ],
-          anchor:"AutoDefault"
+          // endpoint:"Rectangle",
+          anchors: ["BottomCenter", "TopCenter", "LeftCenter", "RightCenter"],
+          connector:"Flowchart" //,
+          // anchor: "AutoDefault"
         });
       });
       
@@ -84,7 +92,8 @@ class Home extends Component {
             <div id="zoomContainer" className="jtk-surface jtk-surface-panning">
             {nodes.map(node => (
                 <NodeItem key={node.id} node={node} />
-              ))}
+              ))
+            }
             </div>
             <DataSet />
           </div>

@@ -12,10 +12,12 @@ class NodeItem extends Component {
       let outer = el.getElementsByClassName('outer')[0]; 
       let inner = el.getElementsByClassName('inner')[0];
 
-      let instance = jsPlumb.getInstance();
+      // let instance = jsPlumb.getInstance();
 
       // console.log(outer, inner)
-      instance.draggable(el);
+      jsPlumb.draggable(el, {
+        containment: 'parent'
+      });
       
       // for connection
       if(outer){
